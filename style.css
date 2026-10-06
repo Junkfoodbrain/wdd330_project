@@ -1,0 +1,18 @@
+body {
+    background-color: #dbc2a4;
+    margin: 0;
+    padding: 1rem;
+    line-height: 1.5;
+}
+
+.selection-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 48rem) {
+    .selection-layout {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
