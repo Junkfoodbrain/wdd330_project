@@ -16,3 +16,27 @@ body {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
+
+/* Movie options grid and movie card styling */
+#movie-options {
+    display: grid;
+    gap: 1rem;
+}
+
+.movie-card {
+    background-color: #ffffff;
+    border: 2px solid #35507b;
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.movie-card h3 {
+    margin-top: 0;
+    color: #35507b;
+}
+
+.movie-card img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
