@@ -18,25 +18,260 @@ body {
 }
 
 /* Movie options grid and movie card styling */
-#movie-options {
+#movie-options,
+#recipe-options {
     display: grid;
     gap: 1rem;
 }
 
-.movie-card {
+#recipe-options {
+    margin-top: 1rem;
+}
+
+.movie-card,
+.recipe-card {
     background-color: #ffffff;
     border: 2px solid #35507b;
     border-radius: 0.5rem;
     padding: 1rem;
 }
 
-.movie-card h3 {
+.movie-card h3,
+.recipe-card h3 {
     margin-top: 0;
     color: #35507b;
 }
 
-.movie-card img {
+.movie-card img,
+.recipe-card img {
     display: block;
     max-width: 100%;
     height: auto;
 }
+
+header {
+    max-width: 70rem;
+    margin: 0 auto 2rem;
+    background-image: linear-gradient(to right, #701602, #b92402 30%, #b92402 70%, #701602);
+    padding: 1.5rem;
+    background-color: #b92402;
+    color: #ffffff;
+    border: 3px solid #ffffff;
+    outline: 2px solid #b92402;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-family: "Bodoni MT Black", "Bodoni MT", Georgia, serif;
+    font-size: clamp(1.8rem, 5vw, 3.5rem);
+    line-height: 1.15;
+}
+
+main {
+    max-width: 70rem;
+    margin: 0 auto;
+}
+
+body {
+    font-family: "Rajdhani", sans-serif;
+    font-size: 1.125rem;
+}
+
+button,
+select {
+    font: inherit;
+}
+
+
+h2,
+h3,
+h4 {
+    font-family: "Bodoni MT Black", "Bodoni MT", Georgia, serif;
+}
+
+.selection-layout {
+    margin-top: 1.5rem;
+}
+
+#movie-section>h2,
+#cuisine-section>h2 {
+    margin-top: 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px dashed #b92402;
+    color: #35507b;
+}
+
+#movie-section,
+#cuisine-section {
+    min-width: 0;
+    padding: 1rem;
+    background-color: #ffffff;
+    border: 2px solid #35507b;
+    border-radius: 0.75rem;
+}
+
+button {
+    padding: 0.6rem 1rem;
+    border: 2px solid #b92402;
+    border-radius: 0.35rem;
+    background-color: #b92402;
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+button:hover {
+    background-color: #35507b;
+    border-color: #35507b;
+}
+
+select {
+    max-width: 100%;
+    padding: 0.4rem 0.6rem;
+    border: 2px solid #35507b;
+    border-radius: 0.35rem;
+    background-color: #ffffff;
+    color: #35507b;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+label {
+    font-weight: 700;
+    color: #243956;
+    font-size: 1.5rem;
+}
+
+
+
+button:focus-visible,
+select:focus-visible {
+    outline: 3px solid #35507b;
+    outline-offset: 3px;
+}
+
+/* Reduce motion based on users preference for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    button {
+        transition: none;
+    }
+}
+
+.movie-card button,
+.recipe-card button {
+    margin-top: 1rem;
+    max-width: 100%;
+    white-space: normal;
+}
+
+/* Final pairing section */
+#pairing-section {
+    margin: 0 0 2rem;
+    padding: 1rem;
+    min-height: 7rem;
+    background-color: #ffffff;
+    background-image: linear-gradient(to right,
+            #9aafca,
+            #ffffff 15%,
+            #ffffff 85%,
+            #9aafca);
+    border: 0.5rem solid #35507b;
+    border-radius: 0.2rem;
+    outline: 2px solid #dbc2a4;
+    outline-offset: -0.75rem;
+    text-align: center;
+}
+
+#pairing-section>h2 {
+    margin-top: 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px dashed #b92402;
+    color: #35507b;
+}
+
+#pairing-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+        "title title"
+        "movie food"
+        "message message";
+    gap: 1rem;
+    align-items: center;
+}
+
+#pairing-details>h3 {
+    grid-area: title;
+    margin: 0;
+    font-family: "Rajdhani", sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+#pairing-details>.pairing-poster {
+    grid-area: movie;
+}
+
+#pairing-details>.pairing-message {
+    grid-area: message;
+    margin: 0;
+    color: #35507b;
+    font-family: "Bodoni MT Black", "Bodoni MT", Georgia, serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+#pairing-details>.pairing-food {
+    grid-area: food;
+}
+
+@media (min-width: 48rem) {
+    #pairing-details {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-areas:
+            "title title title"
+            "movie message food";
+    }
+}
+
+#pairing-details img {
+    justify-self: center;
+    max-width: 100%;
+    height: auto;
+}
+
+#start-over {
+    display: block;
+    margin: 1.5rem auto;
+}
+
+@keyframes pairing-reveal {
+    from {
+        opacity: 0;
+        transform: translateY(0.75rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#pairing-details>h3,
+#pairing-details>img,
+#pairing-details>p {
+    animation: pairing-reveal 0.8s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    #pairing-details>h3,
+    #pairing-details>img,
+    #pairing-details>p {
+        animation: none;
+    }
+}
+
+/* Repeat background-colored cutouts along both ticket edges.*/
