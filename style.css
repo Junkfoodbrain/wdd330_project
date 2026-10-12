@@ -242,6 +242,11 @@ select:focus-visible {
     height: auto;
 }
 
+#saved-pairing-summary {
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
 #start-over {
     display: block;
     margin: 1.5rem auto;
