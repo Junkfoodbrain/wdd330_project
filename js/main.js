@@ -9,7 +9,55 @@ import {
 import { genreCuisinePairings } from "./pairings.js";
 console.log("Comedy cuisine suggestion: ", genreCuisinePairings["35"]);
 
+// setting up items to save in local storage
+const STORAGE_KEY = "movie-night-selections";
 
+let savedChoices = {
+    genre: "",
+    movie: "",
+    cuisine: "",
+    recipe: ""
+};
+
+function loadSavedChoices() {
+    const storedChoices = localStorage.getItem(STORAGE_KEY);
+
+    if (storedChoices) {
+        savedChoices = { ...savedChoices, ...JSON.parse(storedChoices) };
+    }
+}
+
+function saveChoices() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(savedChoices));
+    displaySavedChoices();
+}
+
+function clearSavedChoices() {
+    localStorage.removeItem(STORAGE_KEY);
+    savedChoices = {
+        genre: "",
+        movie: "",
+        cuisine: "",
+        recipe: ""
+    };
+    displaySavedChoices();
+}
+
+function displaySavedChoices() {
+    const summary = document.querySelector("#saved-pairing-summary");
+    const choices = [
+        savedChoices.genre && `Genre: ${savedChoices.genre}`,
+        savedChoices.movie && `Movie: ${savedChoices.movie}`,
+        savedChoices.cuisine && `Cuisine: ${savedChoices.cuisine}`,
+        savedChoices.recipe && `Recipe: ${savedChoices.recipe}`
+    ].filter(Boolean);
+
+    summary.textContent = choices.length
+        ? `Your last movie night: ${choices.join(" | ")}` : "";
+}
+
+loadSavedChoices();
+displaySavedChoices();
 
 getCuisines()
     .then((cuisines) => {
@@ -26,6 +74,7 @@ getCuisines()
 
         const filteredCuisines = cuisines.filter((cuisine) =>
             preferredCuisines.includes(cuisine.strArea)
+
         );
 
         console.log("Selected cuisines:", filteredCuisines);
@@ -38,6 +87,8 @@ getCuisines()
             option.textContent = cuisine.strArea;
             cuisineSelect.append(option);
         });
+
+
     })
 
     .catch((error) => {
@@ -63,8 +114,22 @@ getRecipeDetails("52961")
 const genreSelect = document.querySelector("#genre-select");
 let selectedMovie = null;
 
-genreSelect.addEventListener("change", async () => {
+
+async function handleGenreChange() {
     const genreId = genreSelect.value;
+    if (genreId) {
+        savedChoices.genre = genreSelect.options[genreSelect.selectedIndex].text;
+        savedChoices.movie = "";
+        savedChoices.cuisine = "";
+        savedChoices.recipe = "";
+    } else {
+        clearSavedChoices();
+    }
+
+
+
+
+
     selectedMovie = null;
     document.querySelector("#movie-details").replaceChildren();
     document.querySelector("#movie-options").replaceChildren();
@@ -111,6 +176,11 @@ genreSelect.addEventListener("change", async () => {
 
             chooseButton.addEventListener("click", () => {
                 selectedMovie = movie;
+                savedChoices.movie = movie.title;
+                savedChoices.cuisine = genreCuisinePairings[genreId];
+                savedChoices.recipe = "";
+
+
                 console.log("Selected movie:", movie);
 
                 const movieDetails = document.querySelector("#movie-details");
@@ -136,12 +206,13 @@ genreSelect.addEventListener("change", async () => {
 
                 // Suggest a cuisine based on the selected movie genre.
                 const suggestedCuisine = genreCuisinePairings[genreId];
+
                 const cuisineSelect = document.querySelector("#cuisine-select");
                 cuisineSelect.value = suggestedCuisine;
                 loadRecipes(suggestedCuisine);
             });
 
-            movieCard.append(chooseButton); 1
+            movieCard.append(chooseButton);
             movieOptionsContainer.append(movieCard);
         });
 
@@ -149,7 +220,9 @@ genreSelect.addEventListener("change", async () => {
         console.error("Could not load movies:", error);
     }
     console.log("Selected genre ID:", genreId);
-});
+}
+
+genreSelect.addEventListener("change", handleGenreChange);
 
 const cuisineSelect = document.querySelector("#cuisine-select");
 
@@ -204,6 +277,9 @@ async function loadRecipes(cuisine) {
             chooseRecipeButton.addEventListener("click", async () => {
                 try {
                     const selectedRecipe = await getRecipeDetails(recipe.idMeal);
+                    savedChoices.recipe = selectedRecipe.strMeal;
+                    saveChoices();
+
                     console.log("Selected recipe details:", selectedRecipe);
 
                     const recipeDetails = document.querySelector("#recipe-details");
@@ -296,6 +372,8 @@ async function loadRecipes(cuisine) {
 }
 
 cuisineSelect.addEventListener("change", () => {
+    savedChoices.cuisine = cuisineSelect.value;
+    savedChoices.recipe = "";
     loadRecipes(cuisineSelect.value);
 });
 
